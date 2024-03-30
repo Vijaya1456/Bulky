@@ -105,6 +105,48 @@ how to register?
 builder.Services.AddDbContext<ApplicationDbContext>(options=>
 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+after registration we have to create a database 
+-----------------------------------------------------
+Tools=>nugetpackagemanager=>packagemanagerconsole
+PM> Update-database
+it will create a database in ssms studio databases.
+
+Now, I want to create a table in databases with name category, how to do that?
+---------------------------------------------------------------------------------
+Public ApplicationDbContext(DbContextOptions<ApplicationDbContext> Options):Base(Options)
+{}
+for that we need to define the propety DbSet
+
+Public Dbset<Category> Categories {get; set;}
+
+PM> add-migration addcategorytable to DB
+
+How to insert values to the tables
+---------------------------------------------------------
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+modelBuilder.Entity<Category>().HasData(
+new Category{Id=1,Name="Action", DisplayOrder=1},
+new Category{ Id=2, Name="Scifi",Displayorder=2}
+)
+
+How to retreive that data from tables?
+--------------------------------------------
+We have to do this in controller becuase the data has to shown in view
+
+private readonly ApplicationDbContext _db;
+
+Public CategoryController(ApplicationDbContext db)
+{
+_db=db;
+}
+Public IActionResult Index()
+{
+List<Category> ObjCategoryList=_db.Categories.ToList();
+}
+
+
+
 
 
  
