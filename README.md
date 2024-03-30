@@ -69,3 +69,42 @@ Pipeline means
 -----------------------------
 Basically when a request come to an Application how do you want to process that.
 Development environmen variable is there 
+
+when we have to add package to our Project
+-----------------------------------------------------
+right click on project and go to manage nuget package and install the packages
+In this Project, I used 
+Microsoft.EntityFrameworkcore preview version 8.0.3
+Microsoft.EntityFrameworkCore.SqlServer preview version for the database 
+Microsoft.EntityFrameworkcore.Tools => this will help for the migration
+
+when you added the nuget packages to the project, it will add to the project file Immediately and you can see it in project file.
+
+COnnectionString to add database to appsettings.Json
+-------------------------------------------------------------
+"ConnectonStrings":
+{
+"DefaultConnection": " Server:Koteswararao;Database=Bulky;Trusted_Connection=True;TrustServerCertificate=True"
+}
+
+To Establish connection between EntityFramewrok and Database 
+------------------------------------------------------------------
+we are adding Data Folder and creating class file ApplicationDbContext.
+DbContext class: basically the root class of entityframework to use the entityframework- builtin class
+
+how to pass connectionstring that we have inside appsettingsJson to DbContext
+---------------------------------------------------------------------------------------
+Constructor
+
+Public ApplicationDbContext(DbContextOptions<ApplicationDbContext> Options):Base(Options)
+{}
+
+We have to register the APplicationDbContext in Program.cs file
+how to register?
+--------------------------------------------------------------------------------
+builder.Services.AddDbContext<ApplicationDbContext>(options=>
+options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+
+
+ 
