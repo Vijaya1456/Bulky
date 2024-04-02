@@ -17,5 +17,25 @@ namespace SampleFirstProject.Controllers
             List<Category> ObjCategoryList = _db.Categories.ToList();
             return View(ObjCategoryList);
         }
+
+        public IActionResult Create() {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Create(Category Obj)
+
+        {
+            if(Obj.Name==Obj.DisplayOrder.ToString()) {
+                ModelState.AddModelError("name","CategoryName cannot exactly match with Displayorder.");
+            }
+            if (ModelState.IsValid)
+            { 
+                _db.Categories.Add(Obj);
+                _db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            
+            return View();
+        }
     }
 }
